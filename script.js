@@ -1,11 +1,28 @@
 // =========================
+// LOVEFLIX
+// BANEDETTA ❤️ BELLS KHAIRA
+// =========================
+
+// =========================
 // CONFIG
 // =========================
 
 const CORRECT_PIN = "1110";
 
 let heartsCollected = 0;
-const totalHearts = 3;
+const totalHearts = 5;
+
+let achievements = {
+    login: false,
+    letter: false,
+    quiz: false,
+    memory: false,
+    hearts: false,
+    secret: false
+};
+
+let completedAchievements = 0;
+
 
 // =========================
 // LOADING SCREEN
@@ -33,6 +50,7 @@ window.addEventListener("load", () => {
 
 });
 
+
 // =========================
 // PIN LOGIN
 // =========================
@@ -45,6 +63,8 @@ function checkPin() {
     const error =
         document.getElementById("pinError");
 
+    if (!pinInput || !error) return;
+
     if (pinInput.value === CORRECT_PIN) {
 
         document
@@ -55,8 +75,11 @@ function checkPin() {
             .getElementById("profileScreen")
             .classList.remove("hidden");
 
-        showAchievementPopup(
-            "❤️ Access Granted"
+        error.innerHTML = "";
+
+        unlockAchievement(
+            "login",
+            "❤️ First Login"
         );
 
     } else {
@@ -66,40 +89,49 @@ function checkPin() {
 
         pinInput.value = "";
 
-        setTimeout(() => {
-            error.innerHTML = "";
-        }, 2000);
+        pinInput.focus();
 
     }
 
 }
 
+
 // =========================
-// ENTER WEBSITE
+// ENTER LOVEFLIX
 // =========================
 
 function enterLoveflix() {
 
-    document
-        .getElementById("profileScreen")
-        .classList.add("hidden");
+    const profileScreen =
+        document.getElementById("profileScreen");
 
-    document
-        .getElementById("mainApp")
-        .classList.remove("hidden");
+    const mainApp =
+        document.getElementById("mainApp");
+
+    if (profileScreen) {
+        profileScreen.classList.add("hidden");
+    }
+
+    if (mainApp) {
+        mainApp.classList.remove("hidden");
+    }
 
     const music =
         document.getElementById("bgMusic");
 
     if (music) {
 
-        music.play().catch(() => {});
+        music.volume = 0.7;
+
+        music.play().catch(() => {
+            // Browser may block autoplay.
+            // Music will start after user interaction.
+        });
 
     }
 
-    createConfetti();
-
 }
+
 
 // =========================
 // SCROLL HELPER
@@ -113,13 +145,106 @@ function scrollToSection(id) {
     if (!section) return;
 
     section.scrollIntoView({
-        behavior: "smooth"
+        behavior: "smooth",
+        block: "start"
     });
 
 }
 
+
 // =========================
-// POPUP MESSAGE
+// ACHIEVEMENT SYSTEM
+// =========================
+
+function unlockAchievement(key, title) {
+
+    if (!achievements.hasOwnProperty(key)) {
+        return;
+    }
+
+    if (achievements[key]) {
+        return;
+    }
+
+    achievements[key] = true;
+
+    completedAchievements++;
+
+    showAchievementPopup(title);
+
+    updateAchievementUI();
+
+    updateProgress();
+
+}
+
+
+// =========================
+// UPDATE ACHIEVEMENT UI
+// =========================
+
+function updateAchievementUI() {
+
+    const achievementData = {
+
+        login: {
+            id: "ach1",
+            text: "✅ First Login"
+        },
+
+        letter: {
+            id: "ach2",
+            text: "✅ Read The Confession"
+        },
+
+        quiz: {
+            id: "ach3",
+            text: "✅ Question Answered"
+        },
+
+        memory: {
+            id: "ach4",
+            text: "✅ Memory Hunter"
+        },
+
+        hearts: {
+            id: "ach5",
+            text: "✅ Hidden Heart Finder"
+        },
+
+        secret: {
+            id: "ach6",
+            text: "✅ Confession Unlocked"
+        }
+
+    };
+
+
+    Object.keys(achievementData).forEach(key => {
+
+        if (achievements[key]) {
+
+            const achievement =
+                document.getElementById(
+                    achievementData[key].id
+                );
+
+            if (!achievement) return;
+
+            achievement.classList.add("done");
+
+            achievement.innerHTML =
+                achievementData[key].text;
+
+        }
+
+    });
+
+}
+
+
+// =========================
+// ACHIEVEMENT POPUP
 // =========================
 
 function showAchievementPopup(text) {
@@ -131,7 +256,8 @@ function showAchievementPopup(text) {
 
     if (!popup) return;
 
-    popup.innerHTML = text;
+    popup.innerHTML =
+        "🏆 " + text;
 
     popup.classList.add("show");
 
@@ -143,44 +269,118 @@ function showAchievementPopup(text) {
 
 }
 
+
+// =========================
+// PROGRESS BAR
+// =========================
+
+function updateProgress() {
+
+    const progress =
+        document.getElementById(
+            "seasonProgress"
+        );
+
+    const progressText =
+        document.getElementById(
+            "progressText"
+        );
+
+    const seasonBadge =
+        document.getElementById(
+            "seasonBadge"
+        );
+
+    const percent =
+        (completedAchievements / 6) * 100;
+
+
+    if (progress) {
+
+        progress.style.width =
+            percent + "%";
+
+    }
+
+
+    if (progressText) {
+
+        progressText.innerHTML =
+            completedAchievements +
+            " / 6 Achievements Completed";
+
+    }
+
+
+    if (
+        completedAchievements >= 6 &&
+        seasonBadge
+    ) {
+
+        seasonBadge.innerHTML =
+            "🏆 Our Story Completed ❤️";
+
+        setTimeout(() => {
+
+            const unlocked =
+                document.getElementById(
+                    "seasonUnlocked"
+                );
+
+            if (unlocked) {
+
+                unlocked.classList.remove(
+                    "hidden"
+                );
+
+            }
+
+        }, 1000);
+
+    }
+
+}
+
+
 // =========================
 // LETTER DETECTION
 // =========================
-
-let letterShown = false;
 
 window.addEventListener("scroll", () => {
 
     const letter =
         document.getElementById("letter");
 
-    if (!letter || letterShown) return;
+    if (!letter) return;
 
     const position =
         letter.getBoundingClientRect().top;
 
-    if (position < 350) {
+    if (position < 250) {
 
-        letterShown = true;
-
-        showAchievementPopup(
-            "💌 You Found My Message"
+        unlockAchievement(
+            "letter",
+            "💌 Confession Read"
         );
 
     }
 
 });
 
+
 // =========================
-// HIDDEN HEART SYSTEM
+// HIDDEN HEARTS SYSTEM
 // =========================
 
 function collectHeart(element) {
 
     if (!element) return;
 
-    if (element.classList.contains("found"))
+    if (
+        element.classList.contains("found")
+    ) {
         return;
+    }
 
     element.classList.add("found");
 
@@ -191,19 +391,156 @@ function collectHeart(element) {
 
     createConfetti();
 
-    showAchievementPopup(
-        "❤️ You Found A Hidden Heart"
-    );
 
     if (heartsCollected >= totalHearts) {
 
-        showAchievementPopup(
-            "❤️ You Found All The Hearts"
+        unlockAchievement(
+            "hearts",
+            "❤️ Hidden Heart Finder"
         );
+
+        const unlockBtn =
+            document.getElementById(
+                "unlockBtn"
+            );
+
+        if (unlockBtn) {
+
+            unlockBtn.disabled = false;
+
+            unlockBtn.classList.add("active");
+
+            unlockBtn.innerHTML =
+                "Unlock Our Secret 💌";
+
+        }
 
     }
 
 }
+
+
+// =========================
+// SECRET EPISODE
+// =========================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        const unlockBtn =
+            document.getElementById(
+                "unlockBtn"
+            );
+
+        if (!unlockBtn) return;
+
+
+        unlockBtn.addEventListener(
+            "click",
+            () => {
+
+                if (
+                    heartsCollected <
+                    totalHearts
+                ) {
+
+                    return;
+
+                }
+
+
+                const secretContent =
+                    document.getElementById(
+                        "secretContent"
+                    );
+
+                if (secretContent) {
+
+                    secretContent.classList.remove(
+                        "hidden"
+                    );
+
+                }
+
+
+                unlockAchievement(
+                    "secret",
+                    "💌 Confession Unlocked"
+                );
+
+                createConfetti();
+
+
+                const secretEpisode =
+                    document.getElementById(
+                        "secretEpisode"
+                    );
+
+                if (secretEpisode) {
+
+                    secretEpisode.scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+// =========================
+// QUIZ SYSTEM
+// =========================
+
+function correctAnswer() {
+
+    const result =
+        document.getElementById(
+            "quizResult"
+        );
+
+    if (!result) return;
+
+
+    result.innerHTML =
+        "Correct! It's you, Bells Khaira ❤️";
+
+    result.style.color =
+        "#4ade80";
+
+
+    unlockAchievement(
+        "quiz",
+        "💕 Question Answered"
+    );
+
+    createConfetti();
+
+}
+
+
+function wrongAnswer() {
+
+    const result =
+        document.getElementById(
+            "quizResult"
+        );
+
+    if (!result) return;
+
+
+    result.innerHTML =
+        "Nope 😭 Try again!";
+
+    result.style.color =
+        "#ff4d4d";
+
+}
+
 
 // =========================
 // CONFETTI EFFECT
@@ -218,14 +555,18 @@ function createConfetti() {
 
     if (!container) return;
 
+
     const icons = [
         "❤️",
-        "💖",
-        "💕",
+        "💌",
         "✨",
-        "🌹",
-        "💗"
+        "💕",
+        "🌷",
+        "💖",
+        "🎀",
+        "😻"
     ];
+
 
     for (let i = 0; i < 30; i++) {
 
@@ -244,46 +585,63 @@ function createConfetti() {
                 )
             ];
 
+
         confetti.style.left =
             Math.random() * 100 + "%";
 
-        confetti.style.animationDuration =
-            (Math.random() * 2 + 2) + "s";
 
-        container.appendChild(confetti);
+        confetti.style.animationDuration =
+            (
+                Math.random() * 2 + 2
+            ) + "s";
+
+
+        confetti.style.animationDelay =
+            (
+                Math.random() * 0.5
+            ) + "s";
+
+
+        container.appendChild(
+            confetti
+        );
+
 
         setTimeout(() => {
 
             confetti.remove();
 
-        }, 4000);
+        }, 4500);
 
     }
 
 }
 
+
 // =========================
-// FINAL QUESTION
+// NEXT CHAPTER
 // =========================
 
 function renewSeason() {
 
-    const message =
+    const renewMessage =
         document.getElementById(
             "renewMessage"
         );
 
-    if (!message) return;
+    if (!renewMessage) return;
 
-    message.innerHTML =
-        "I'll be waiting for your answer, Bibeng... ❤️";
+
+    renewMessage.innerHTML =
+        "maybe this is just the beginning... ❤️";
 
     createConfetti();
 
 }
 
+
 // =========================
-// CLOSE POPUP
+// CLOSE COMPLETED POPUP
 // =========================
 
 function closeSeasonUnlocked() {
@@ -299,6 +657,7 @@ function closeSeasonUnlocked() {
 
 }
 
+
 // =========================
 // AUTO CONFETTI
 // =========================
@@ -309,8 +668,253 @@ setTimeout(() => {
 
 }, 5000);
 
+
 // =========================
-// SCROLL REVEAL
+// MEMORY MATCH GAME
+// =========================
+
+let firstCard = null;
+let secondCard = null;
+
+let lockBoard = false;
+
+let matchedPairs = 0;
+
+
+// Get all memory cards
+
+const memoryCards =
+    document.querySelectorAll(
+        ".memory-card"
+    );
+
+
+// Total pairs is automatically
+// calculated from unique data-card values.
+
+const memoryTypes =
+    new Set(
+        Array.from(memoryCards).map(
+            card => card.dataset.card
+        )
+    );
+
+const totalPairs =
+    memoryTypes.size;
+
+
+// Add click event
+
+memoryCards.forEach(card => {
+
+    card.addEventListener(
+        "click",
+        flipCard
+    );
+
+});
+
+
+// =========================
+// FLIP CARD
+// =========================
+
+function flipCard() {
+
+    if (lockBoard) return;
+
+    if (this === firstCard) return;
+
+    if (
+        this.classList.contains("matched")
+    ) {
+        return;
+    }
+
+
+    this.classList.add("flip");
+
+
+    if (!firstCard) {
+
+        firstCard = this;
+
+        return;
+
+    }
+
+
+    secondCard = this;
+
+    checkMatch();
+
+}
+
+
+// =========================
+// CHECK MATCH
+// =========================
+
+function checkMatch() {
+
+    const isMatch =
+        firstCard.dataset.card ===
+        secondCard.dataset.card;
+
+
+    if (isMatch) {
+
+        disableCards();
+
+    } else {
+
+        unflipCards();
+
+    }
+
+}
+
+
+// =========================
+// DISABLE MATCHED CARDS
+// =========================
+
+function disableCards() {
+
+    firstCard.removeEventListener(
+        "click",
+        flipCard
+    );
+
+    secondCard.removeEventListener(
+        "click",
+        flipCard
+    );
+
+
+    firstCard.classList.add(
+        "matched"
+    );
+
+    secondCard.classList.add(
+        "matched"
+    );
+
+
+    matchedPairs++;
+
+    resetBoard();
+
+
+    if (
+        matchedPairs >= totalPairs
+    ) {
+
+        const memoryResult =
+            document.getElementById(
+                "memoryResult"
+            );
+
+
+        if (memoryResult) {
+
+            memoryResult.innerHTML =
+                "❤️ Memory Match Completed! 💌";
+
+        }
+
+
+        unlockAchievement(
+            "memory",
+            "🧩 Memory Hunter"
+        );
+
+
+        createConfetti();
+
+    }
+
+}
+
+
+// =========================
+// UNFLIP CARDS
+// =========================
+
+function unflipCards() {
+
+    lockBoard = true;
+
+
+    setTimeout(() => {
+
+        if (firstCard) {
+
+            firstCard.classList.remove(
+                "flip"
+            );
+
+        }
+
+
+        if (secondCard) {
+
+            secondCard.classList.remove(
+                "flip"
+            );
+
+        }
+
+
+        resetBoard();
+
+    }, 900);
+
+}
+
+
+// =========================
+// RESET BOARD
+// =========================
+
+function resetBoard() {
+
+    [firstCard, secondCard] =
+        [null, null];
+
+    lockBoard = false;
+
+}
+
+
+// =========================
+// SHUFFLE MEMORY CARDS
+// =========================
+
+(function shuffleCards() {
+
+    const cards =
+        Array.from(
+            document.querySelectorAll(
+                ".memory-card"
+            )
+        );
+
+
+    cards.forEach(card => {
+
+        card.style.order =
+            Math.floor(
+                Math.random() * cards.length
+            );
+
+    });
+
+})();
+
+
+// =========================
+// LOVEFLIX ENTRANCE EFFECT
 // =========================
 
 document.addEventListener(
@@ -322,7 +926,6 @@ document.addEventListener(
                 ".section"
             );
 
-        if (!sections.length) return;
 
         const observer =
             new IntersectionObserver(
@@ -350,6 +953,7 @@ document.addEventListener(
                 }
             );
 
+
         sections.forEach(section => {
 
             section.style.opacity = "0";
@@ -358,7 +962,7 @@ document.addEventListener(
                 "translateY(50px)";
 
             section.style.transition =
-                ".8s ease";
+                "0.8s ease";
 
             observer.observe(section);
 
@@ -367,87 +971,184 @@ document.addEventListener(
     }
 );
 
+
 // =========================
-// HERO BUTTON
+// HERO PLAY BUTTON
 // =========================
 
-const playButton =
-    document.querySelector(
-        ".play-btn"
-    );
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-if (playButton) {
+        const playButton =
+            document.querySelector(
+                ".play-btn"
+            );
 
-    playButton.addEventListener(
-        "click",
-        () => {
 
-            createConfetti();
+        if (!playButton) return;
 
-            scrollToSection("letter");
+
+        playButton.addEventListener(
+            "click",
+            () => {
+
+                const music =
+                    document.getElementById(
+                        "bgMusic"
+                    );
+
+
+                if (music) {
+
+                    music.play().catch(
+                        () => {}
+                    );
+
+                }
+
+
+                createConfetti();
+
+
+                const continueSection =
+                    document.getElementById(
+                        "continue"
+                    );
+
+
+                if (continueSection) {
+
+                    continueSection.scrollIntoView({
+                        behavior: "smooth"
+                    });
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+// =========================
+// AUTO STORY BADGE
+// =========================
+
+setInterval(() => {
+
+    if (
+        completedAchievements >= 6
+    ) {
+
+        const badge =
+            document.getElementById(
+                "seasonBadge"
+            );
+
+
+        if (badge) {
+
+            badge.innerHTML =
+                "🏆 Our Story Completed ❤️";
 
         }
-    );
 
-}
+    }
+
+}, 1000);
+
 
 // =========================
 // FLOATING HERO TITLE
 // =========================
 
-const heroTitle =
-    document.querySelector(
-        ".hero-content h1"
-    );
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
 
-if (heroTitle) {
+        const heroTitle =
+            document.querySelector(
+                ".hero-content h1"
+            );
 
-    setInterval(() => {
 
-        heroTitle.style.transform =
-            "translateY(-3px)";
+        if (!heroTitle) return;
 
-        setTimeout(() => {
+
+        setInterval(() => {
 
             heroTitle.style.transform =
-                "translateY(0)";
+                "translateY(-3px)";
 
-        }, 600);
 
-    }, 2000);
+            setTimeout(() => {
 
-}
+                heroTitle.style.transform =
+                    "translateY(0)";
+
+            }, 600);
+
+        }, 2000);
+
+    }
+);
+
 
 // =========================
-// MUSIC CLICK SUPPORT
+// ENTER KEY FOR PIN
 // =========================
 
 document.addEventListener(
-    "click",
+    "DOMContentLoaded",
     () => {
 
-        const music =
+        const pinInput =
             document.getElementById(
-                "bgMusic"
+                "pinInput"
             );
 
-        if (
-            music &&
-            music.paused &&
-            document
-                .getElementById("mainApp")
-                ?.classList.contains("hidden") === false
-        ) {
 
-            music.play().catch(() => {});
+        if (!pinInput) return;
 
-        }
 
-    },
-    { once: true }
+        pinInput.addEventListener(
+            "keydown",
+            event => {
+
+                if (
+                    event.key === "Enter"
+                ) {
+
+                    checkPin();
+
+                }
+
+            }
+        );
+
+    }
 );
+
+
+// =========================
+// INITIAL PROGRESS
+// =========================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    () => {
+
+        updateAchievementUI();
+        updateProgress();
+
+    }
+);
+
 
 // =========================
 // END
-// BANedetta × BELLS KHAIRA
+// LOVEFLIX
+// BANEDETTA ❤️ BELLS KHAIRA
 // =========================
