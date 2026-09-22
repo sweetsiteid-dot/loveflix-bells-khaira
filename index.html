@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>For Bells Khaira</title>
+
+<link rel="stylesheet" href="style.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+</head>
+<body>
+
+<!-- ========================= -->
+<!-- AUDIO -->
+<!-- ========================= -->
+
+<audio id="bgMusic" loop>
+    <source src="masa-ini-nanti-dan-masa-indah-lainnya.mp3" type="audio/mpeg">
+</audio>
+
+<!-- ========================= -->
+<!-- LOADING SCREEN -->
+<!-- ========================= -->
+
+<div id="loadingScreen">
+
+    <div class="netflix-logo">
+        FOR YOU
+    </div>
+
+    <p>Loading Something For You...</p>
+
+</div>
+
+<!-- ========================= -->
+<!-- PIN SCREEN -->
+<!-- ========================= -->
+
+<div id="pinScreen" class="hidden">
+
+    <div class="pin-box">
+
+        <h2>Private Message 🔒</h2>
+
+        <p>Enter Access Code</p>
+
+        <input
+            type="password"
+            id="pinInput"
+            maxlength="4"
+            placeholder="••••"
+        >
+
+        <button onclick="checkPin()">
+            Continue
+        </button>
+
+        <span id="pinError"></span>
+
+    </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- PROFILE SELECTION -->
+<!-- ========================= -->
+
+<div id="profileScreen" class="hidden">
+
+    <h1>Who's This For?</h1>
+
+    <div class="profiles">
+
+        <div class="profile-card" onclick="enterLoveflix()">
+
+            <img src="foto1.jpg">
+
+            <p>Bells Khaira ❤️</p>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- ========================= -->
+<!-- MAIN APP -->
+<!-- ========================= -->
+
+<div id="mainApp" class="hidden">
+
+<!-- ========================= -->
+<!-- NAVBAR -->
+<!-- ========================= -->
+
+<nav>
+
+    <div class="logo">
+        FOR YOU
+    </div>
+
+    <ul>
+
+        <li>
+            <a href="#hero">
+                Home
+            </a>
+        </li>
+
+        <li>
+            <a href="#memories">
+                Memories
+            </a>
+        </li>
+
+        <li>
+            <a href="#letter">
+                Letter
+            </a>
+        </li>
+
+        <li>
+            <a href="#ending">
+                Ending
+            </a>
+        </li>
+
+    </ul>
+
+</nav>
+
+<!-- ========================= -->
+<!-- HERO SECTION -->
+<!-- ========================= -->
+
+<section
+id="hero"
+class="hero"
+style="background-image:url('foto1.jpg');"
+>
+
+<div class="overlay"></div>
+
+<div class="hero-content">
+
+    <span class="badge">
+        SOMETHING I WANT TO TELL YOU
+    </span>
+
+    <h1>
+        FOR BELLS KHAIRA
+    </h1>
+
+    <h3>
+        From Banedetta ❤️
+    </h3>
+
+    <p>
+        There is something I've been
+        wanting to tell you for a while.
+    </p>
+
+    <div class="hero-buttons">
+
+        <button
+        class="play-btn"
+        onclick="scrollToSection('letter')">
+
+            ▶ Read My Message
+
+        </button>
+
+        <button
+        class="info-btn"
+        onclick="scrollToSection('memories')">
+
+            Our Memories
+
+        </button>
+
+    </div>
+
+</div>
+
+<!-- Hidden Heart #1 -->
+
+<div
+class="hidden-heart"
+onclick="collectHeart(this)"
+>
+❤️
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- MEMORIES -->
+<!-- ========================= -->
+
+<section
+id="memories"
+class="section"
+>
+
+<h2>
+Our Memories
+</h2>
+
+<div class="movie-row">
+
+<div class="movie-card">
+
+<img src="foto2.jpg">
+
+<div class="movie-info">
+
+<h3>
+A Little Memory
+</h3>
+
+<p>
+Memory #01
+</p>
+
+</div>
+
+</div>
+
+<div class="movie-card">
+
+<img src="foto3.jpg">
+
+<div class="movie-info">
+
+<h3>
+Sweet Moment
+</h3>
+
+<p>
+Memory #02
+</p>
+
+</div>
+
+</div>
+
+<div class="movie-card">
+
+<img src="foto4.jpg">
+
+<div class="movie-info">
+
+<h3>
+One Of My Favorites
+</h3>
+
+<p>
+Memory #03
+</p>
+
+</div>
+
+</div>
+
+<div class="movie-card">
+
+<img src="foto5.jpg">
+
+<div class="movie-info">
+
+<h3>
+Us
+</h3>
+
+<p>
+Memory #04
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- PHOTO GALLERY -->
+<!-- ========================= -->
+
+<section class="section">
+
+<h2>
+Little Things I Remember
+</h2>
+
+<div class="grid-gallery">
+
+<div class="poster">
+<img src="foto6.jpg">
+</div>
+
+<div class="poster">
+<img src="foto7.jpg">
+</div>
+
+<div class="poster">
+<img src="foto8.jpg">
+</div>
+
+<div class="poster">
+<img src="foto9.jpg">
+</div>
+
+<div class="poster">
+<img src="foto10.jpg">
+</div>
+
+<div class="poster">
+<img src="foto11.jpg">
+</div>
+
+<div class="poster">
+<img src="foto12.jpg">
+</div>
+
+<div class="poster">
+<img src="foto13.jpg">
+</div>
+
+<div class="poster">
+<img src="foto14.jpg">
+</div>
+
+<div class="poster">
+<img src="foto15.jpg">
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- LOVE LETTER -->
+<!-- ========================= -->
+
+<section
+id="letter"
+class="section"
+>
+
+<h2>
+Something I Want To Tell You
+</h2>
+
+<div class="letter-box">
+
+<h3>
+For Bells Khaira ❤️
+</h3>
+
+<p>
+
+i don't really know where to start,
+but i think i should finally say this.
+
+at first, i only thought u were pretty.
+it was just a simple crush, something
+i thought would pass eventually.
+
+then i started talking to u.
+and somehow, that little crush became
+something more.
+
+the more i got to know u, the more
+i found myself thinking about u,
+waiting for ur messages, and wanting
+to know u a little deeper.
+
+i don't know exactly when it happened,
+but somewhere between all our
+conversations, i stopped simply liking u.
+
+i fell for u :)
+
+i thought i could keep this feeling
+simple, but i guess that's where i lost.
+
+u became someone i genuinely care about,
+someone i miss, someone i want to keep close.
+
+so i think it's time i stop calling
+this just a crush.
+
+im into u, bibeng.
+
+so...
+
+bibeng, can i be ur bf??
+
+fyi, im always ready to be ur man.
+
+❤️
+
+</p>
+
+</div>
+
+<!-- Hidden Heart #2 -->
+
+<div
+class="hidden-heart letter-heart"
+onclick="collectHeart(this)"
+>
+❤️
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- PHOTO MOMENTS -->
+<!-- ========================= -->
+
+<section class="section">
+
+<h2>
+15 Moments
+</h2>
+
+<div class="grid-gallery">
+
+<div class="poster">
+<img src="foto1.jpg">
+</div>
+
+<div class="poster">
+<img src="foto2.jpg">
+</div>
+
+<div class="poster">
+<img src="foto3.jpg">
+</div>
+
+<div class="poster">
+<img src="foto4.jpg">
+</div>
+
+<div class="poster">
+<img src="foto5.jpg">
+</div>
+
+<div class="poster">
+<img src="foto6.jpg">
+</div>
+
+<div class="poster">
+<img src="foto7.jpg">
+</div>
+
+<div class="poster">
+<img src="foto8.jpg">
+</div>
+
+<div class="poster">
+<img src="foto9.jpg">
+</div>
+
+<div class="poster">
+<img src="foto10.jpg">
+</div>
+
+<div class="poster">
+<img src="foto11.jpg">
+</div>
+
+<div class="poster">
+<img src="foto12.jpg">
+</div>
+
+<div class="poster">
+<img src="foto13.jpg">
+</div>
+
+<div class="poster">
+<img src="foto14.jpg">
+</div>
+
+<div class="poster">
+<img src="foto15.jpg">
+</div>
+
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- FINAL MESSAGE -->
+<!-- ========================= -->
+
+<section
+id="ending"
+class="credits-section"
+>
+
+<div class="credits-wrapper">
+
+<h1>
+FOR BELLS KHAIRA
+</h1>
+
+<p>
+A little message from
+</p>
+
+<h2>
+Banedetta ❤️
+</h2>
+
+<br>
+
+<p>
+To
+</p>
+
+<h2>
+Bells Khaira
+</h2>
+
+<br>
+
+<p>
+There are things that are
+hard to say directly...
+
+</p>
+
+<br>
+
+<h1>
+So I wrote them here.
+</h1>
+
+<br><br>
+
+<h2>
+I hope you read this
+until the end. ❤️
+</h2>
+
+</div>
+
+<!-- Hidden Heart #3 -->
+
+<div
+class="hidden-heart credits-heart"
+onclick="collectHeart(this)"
+>
+❤️
+</div>
+
+</section>
+
+<!-- ========================= -->
+<!-- FINAL QUESTION -->
+<!-- ========================= -->
+
+<section
+class="final-screen"
+>
+
+<div class="final-card">
+
+<h1>
+❤️ One Last Question
+</h1>
+
+<p>
+After everything I've said...
+</p>
+
+<h2>
+Bibeng, can I be ur bf??
+</h2>
+
+<button
+onclick="renewSeason()"
+class="renew-btn"
+>
+
+YES ❤️
+
+</button>
+
+<div id="renewMessage">
+
+</div>
+
+</div>
+
+</section>
+
+</div>
+<!-- END MAIN APP -->
+
+<!-- ========================= -->
+<!-- CONFETTI -->
+<!-- ========================= -->
+
+<div id="confettiContainer">
+
+</div>
+
+<!-- ========================= -->
+<!-- FLOATING HEARTS -->
+<!-- ========================= -->
+
+<div class="floating-hearts">
+
+<span>❤️</span>
+<span>❤️</span>
+<span>❤️</span>
+<span>❤️</span>
+<span>❤️</span>
+
+</div>
+
+<!-- ========================= -->
+<!-- POPUP -->
+<!-- ========================= -->
+
+<div
+id="achievementPopup"
+class="achievement-popup"
+>
+
+❤️ Something Special For You
+
+</div>
+
+<!-- ========================= -->
+<!-- SUCCESS SCREEN -->
+<!-- ========================= -->
+
+<div
+id="seasonUnlocked"
+class="season-unlocked hidden"
+>
+
+<div class="unlock-box">
+
+<h1>
+❤️ MESSAGE UNLOCKED
+</h1>
+
+<p>
+You made it to the end.
+
+And now you know
+what I've been wanting
+to tell you.
+</p>
+
+<h3>
+I really like you, Bibeng ❤️
+</h3>
+
+<button
+onclick="closeSeasonUnlocked()"
+>
+
+Continue
+
+</button>
+
+</div>
+
+</div>
+
+<!-- ========================= -->
+<!-- FOOTER -->
+<!-- ========================= -->
+
+<footer>
+
+<p>
+Made with ❤️ by Banedetta
+</p>
+
+</footer>
+
+<!-- ========================= -->
+<!-- SCRIPT -->
+<!-- ========================= -->
+
+<script src="script.js"></script>
+
+</body>
+  </html>
